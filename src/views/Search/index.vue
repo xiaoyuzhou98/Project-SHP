@@ -11,10 +11,8 @@
             </li>
           </ul>
           <ul class="fl sui-tag">
-            <li class="with-x">手机</li>
-            <li class="with-x">iphone<i>×</i></li>
-            <li class="with-x">华为<i>×</i></li>
-            <li class="with-x">OPPO<i>×</i></li>
+            <li class="with-x" v-if="searchParams.categoryName">{{ searchParams.categoryName }}<i @click="removeCategoryName">×</i></li>
+            <li class="with-x" v-if="searchParams.keyword">{{ searchParams.keyword }}<i @click="removeKeyword">×</i></li>
           </ul>
         </div>
 
@@ -136,16 +134,48 @@ export default {
     SearchSelector,
   },
   beforeMount() {
-    Object.assign(this.searchParams,this.$route.query,this.$route.params)
-    console.log("ss", this.$route.query);
+    Object.assign(this.searchParams, this.$route.query, this.$route.params);
   },
   mounted() {
     this.getData();
   },
-  watch: {},
+  watch: {
+    $route: {
+      handler() {
+        Object.assign(this.searchParams, this.$route.query, this.$route.params);
+        this.getData();
+        this.searchParams.category1Id = "";
+        this.searchParams.category2Id = "";
+        this.searchParams.category3Id = "";
+      },
+    },
+  },
   methods: {
     getData() {
       this.$store.dispatch("search/getSearchList", this.searchParams);
+    },
+    removeCategoryName() {
+      this.searchParams.categoryName = undefined;
+      this.searchParams.category1Id = undefined;
+      this.searchParams.category2Id = undefined;
+      this.searchParams.category3Id = undefined;
+      this.getData();
+      if (this.$route.params) {
+        this.$router.push({ name: "search", params: this.$route.params });
+      } else {
+        this.$router.push({ name: "search" });
+      }
+    },
+    removeKeyword() {
+      this.searchParams.keyword = undefined;
+      this.getData();
+
+      this.$bus.$emit('clear');
+      if (this.$route.query) {
+        this.$router.push({ name: "search", query: this.$route.query });
+      } else {
+        this.$router.push({ name: "search" });
+      }
     },
   },
   computed: {
