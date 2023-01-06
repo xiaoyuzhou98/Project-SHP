@@ -5,7 +5,10 @@ import router from "@/router";
 Vue.config.productionTip = false;
 
 import TypeNav from "@/components/TypeNav";
+import Carousel from "@/components/Carousel";
+
 Vue.component(TypeNav.name, TypeNav);
+Vue.component(Carousel.name, Carousel);
 
 import store from "@/store";
 import "@/mock/mockServe";

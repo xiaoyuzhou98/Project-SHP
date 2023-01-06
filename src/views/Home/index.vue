@@ -5,7 +5,7 @@
     <Recommand />
     <Rank />
     <Like />
-    <Floor v-for="floor in floorList" :key="floor.id"/>
+    <Floor v-for="floor in floorList" :key="floor.id" :list="floor" />
     <Brand />
   </div>
 </template>
