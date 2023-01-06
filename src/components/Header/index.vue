@@ -51,7 +51,7 @@ export default {
     goSearch() {
       this.$router.push({
         name: "search",
-        params: { keyword: "" || undefined },
+        // params: { keyword: "" || undefined },
         query: { key: this.keyword },
       });
     },

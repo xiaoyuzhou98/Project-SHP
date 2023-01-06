@@ -17,6 +17,7 @@ VueRouter.prototype.push = function (location, resolve, reject) {
   } else {
     originPush.call(
       this,
+      location,
       () => {},
       () => {},
     );
@@ -30,6 +31,7 @@ VueRouter.prototype.replace ==
     } else {
       originReplace.call(
         this,
+        location,
         () => {},
         () => {},
       );
@@ -38,25 +40,29 @@ VueRouter.prototype.replace ==
 export default new VueRouter({
   routes: [
     {
+      name: "home",
       path: "/home",
       component: Home,
       meta: { showFooter: true },
     },
     {
       name: "search",
-      path: "/search/:keyword?",
+      path: "/search",
       component: Search,
       meta: { showFooter: true },
     },
     {
+      name: "register",
       path: "/register",
       component: Register,
       meta: { showFooter: false },
     },
     {
+      name: "login",
       path: "/login",
       component: Login,
       meta: { showFooter: false },
     },
+    { path: "*", redirect: "/home" },
   ],
 });
