@@ -13,11 +13,17 @@
           <ul class="fl sui-tag">
             <li class="with-x" v-if="searchParams.categoryName">{{ searchParams.categoryName }}<i @click="removeCategoryName">×</i></li>
             <li class="with-x" v-if="searchParams.keyword">{{ searchParams.keyword }}<i @click="removeKeyword">×</i></li>
+            <li class="with-x" v-if="searchParams.trademark">{{ searchParams.trademark.split(":")[1] }}<i @click="removeTradeMark">×</i></li>
+
+            <!-- props -->
+            <li class="with-x" v-for="(prop, index) in searchParams.props" :key="index">
+              {{ prop.split(":")[1] }}<i @click="removeProp(prop)">×</i>
+            </li>
           </ul>
         </div>
 
         <!--selector-->
-        <SearchSelector />
+        <SearchSelector @tradeMarkInfo="getTradeMarkInfo" @attrInfo="getAttrInfo" />
 
         <!--details-->
         <div class="details clearfix">
@@ -170,12 +176,35 @@ export default {
       this.searchParams.keyword = undefined;
       this.getData();
 
-      this.$bus.$emit('clear');
+      this.$bus.$emit("clear");
       if (this.$route.query) {
         this.$router.push({ name: "search", query: this.$route.query });
       } else {
         this.$router.push({ name: "search" });
       }
+    },
+    getTradeMarkInfo(trademark) {
+      this.searchParams.trademark = `${trademark.tmId}:${trademark.tmName}`;
+      this.getData();
+    },
+
+    removeTradeMark() {
+      this.searchParams.trademark = undefined;
+      this.getData();
+    },
+
+    getAttrInfo(attr, attrValue) {
+      // "props": ["1:1700-2799:价格", "2:6.65-6.74英寸:屏幕尺寸"],
+      const prop = `${attr.attrId}:${attrValue}:${attr.attrName}`;
+      if (this.searchParams.props.indexOf(prop) === -1) this.searchParams.props.push(prop);
+      this.getData();
+    },
+
+    removeProp(prop) {
+      let index = this.searchParams.props.indexOf(prop);
+      // console.log("ss", index);
+      this.searchParams.props.splice(index, 1);
+      this.getData();
     },
   },
   computed: {
