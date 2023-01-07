@@ -1,26 +1,60 @@
 <template>
   <div class="pagination">
-    <button>上一页</button>
-    <button>1</button>
-    <button>···</button>
+    <button :disabled="pageNo === 1" @click="$emit('getPageNo', pageNo - 1)">上一页</button>
+    <button v-if="startNumAndEndNum.start > 1" @click="$emit('getPageNo', 1)">1</button>
+    <button v-if="startNumAndEndNum.start > 2">···</button>
 
-    <button>3</button>
-    <button>4</button>
-    <button>5</button>
-    <button>6</button>
-    <button>7</button>
+    <button v-for="(page, index) in startNumAndEndNum.pageList" :key="index" :class="{ active: page === pageNo }" @click="$emit('getPageNo', page)">
+      {{ page }}
+    </button>
 
-    <button>···</button>
-    <button>9</button>
-    <button>下一页</button>
+    <button v-if="startNumAndEndNum.end < totalPage - 1">···</button>
+    <button v-if="startNumAndEndNum.end < totalPage" @click="$emit('getPageNo', totalPage)">{{ totalPage }}</button>
+    <button :disabled="pageNo === totalPage" @click="$emit('getPageNo', pageNo + 1)">下一页</button>
 
-    <button style="margin-left: 30px">共 60 条</button>
+    <button style="margin-left: 30px; padding: 0 10px">共{{ total }}条结果</button>
   </div>
 </template>
 
 <script>
 export default {
   name: "Pagination",
+  props: ["pageNo", "pageSize", "total", "continues"],
+  computed: {
+    totalPage() {
+      return Math.ceil(this.total / this.pageSize);
+    },
+    startNumAndEndNum() {
+      let start = 0;
+      let end = 0;
+      if (this.continues > this.total) {
+        start = 1;
+        end = this.totalPage;
+      } else {
+        let gap = Math.floor(this.continues / 2);
+        start = this.pageNo - gap;
+        end = this.pageNo + gap;
+        if (start < 1) {
+          start = 1;
+          end = this.continues;
+        }
+        if (end > this.totalPage) {
+          end = this.totalPage;
+          start = this.totalPage - this.continues + 1;
+        }
+      }
+      let pageList = [];
+      for (let i = 0; i < end - start + 1; i++) {
+        pageList.push(start + i);
+      }
+      return { start, end, pageList };
+    },
+  },
+  methods: {
+    switchPage() {
+      console.log("sdad");
+    },
+  },
 };
 </script>
 
@@ -52,7 +86,7 @@ export default {
 
     &.active {
       cursor: not-allowed;
-      background-color: #409eff;
+      background-color: #e1251b;
       color: #fff;
     }
   }

@@ -68,7 +68,13 @@
               </li>
             </ul>
           </div>
-          <Pagination />
+          <Pagination
+            :pageNo="searchParams.pageNo"
+            :pageSize="searchParams.pageSize"
+            :total="total"
+            :continues="5"
+            @getPageNo="getPageNo"
+          />
         </div>
       </div>
     </div>
@@ -77,7 +83,7 @@
 
 <script>
 import SearchSelector from "./SearchSelector/SearchSelector";
-import { mapGetters } from "vuex";
+import { mapGetters, mapState } from "vuex";
 export default {
   name: "Search",
   data() {
@@ -179,6 +185,11 @@ export default {
       this.searchParams.order = order;
       this.getData();
     },
+
+    getPageNo(pageNo){
+      this.searchParams.pageNo = pageNo;
+      this.getData();
+    }
   },
   computed: {
     ...mapGetters({
@@ -196,6 +207,9 @@ export default {
     isDown() {
       return this.searchParams.order.includes("desc");
     },
+    ...mapState({
+      total: (state) => state.search.searchList.total,
+    }),
   },
 };
 </script>
