@@ -30,23 +30,11 @@
           <div class="sui-navbar">
             <div class="navbar-inner filter">
               <ul class="sui-nav">
-                <li class="active">
-                  <a href="#">综合</a>
+                <li :class="{ active: isOne }" @click="changeOrder('1')" ref="all">
+                  <a>综合<span class="iconfont" :class="{ 'icon-down': isDown, 'icon-up': isUp }" v-show="isOne"></span> </a>
                 </li>
-                <li>
-                  <a href="#">销量</a>
-                </li>
-                <li>
-                  <a href="#">新品</a>
-                </li>
-                <li>
-                  <a href="#">评价</a>
-                </li>
-                <li>
-                  <a href="#">价格⬆</a>
-                </li>
-                <li>
-                  <a href="#">价格⬇</a>
+                <li :class="{ active: isTwo }" @click="changeOrder('2')" ref="sale">
+                  <a>销量<span class="iconfont" :class="{ 'icon-down': isDown, 'icon-up': isUp }" v-show="isTwo"></span></a>
                 </li>
               </ul>
             </div>
@@ -80,35 +68,7 @@
               </li>
             </ul>
           </div>
-          <div class="fr page">
-            <div class="sui-pagination clearfix">
-              <ul>
-                <li class="prev disabled">
-                  <a href="#">«上一页</a>
-                </li>
-                <li class="active">
-                  <a href="#">1</a>
-                </li>
-                <li>
-                  <a href="#">2</a>
-                </li>
-                <li>
-                  <a href="#">3</a>
-                </li>
-                <li>
-                  <a href="#">4</a>
-                </li>
-                <li>
-                  <a href="#">5</a>
-                </li>
-                <li class="dotted"><span>...</span></li>
-                <li class="next">
-                  <a href="#">下一页»</a>
-                </li>
-              </ul>
-              <div><span>共10页&nbsp;</span></div>
-            </div>
-          </div>
+          <Pagination />
         </div>
       </div>
     </div>
@@ -128,7 +88,7 @@ export default {
         category3Id: "",
         categoryName: "",
         keyword: "",
-        order: "",
+        order: "1:desc",
         pageNo: 1,
         pageSize: 10,
         props: [],
@@ -206,11 +166,36 @@ export default {
       this.searchParams.props.splice(index, 1);
       this.getData();
     },
+
+    changeOrder(flag) {
+      const [originFlag, originSort] = this.searchParams.order.split(":");
+      let order;
+      if (flag === originFlag) {
+        order = `${originFlag}:${originSort === "asc" ? "desc" : "asc"}`;
+      } else {
+        order = `${flag}:${originSort}`;
+      }
+
+      this.searchParams.order = order;
+      this.getData();
+    },
   },
   computed: {
     ...mapGetters({
       goodsList: "search/goodsList",
     }),
+    isOne() {
+      return this.searchParams.order.includes("1");
+    },
+    isTwo() {
+      return this.searchParams.order.includes("2");
+    },
+    isUp() {
+      return this.searchParams.order.includes("asc");
+    },
+    isDown() {
+      return this.searchParams.order.includes("desc");
+    },
   },
 };
 </script>
