@@ -4,6 +4,7 @@ import Register from "@/views/Register";
 import Login from "@/views/Login";
 import Detail from "@/views/Detail";
 import AddCartSuccess from "@/views/AddCartSuccess";
+import ShopCart  from "@/views/ShopCart";
 
 export default [
   {
@@ -40,6 +41,12 @@ export default [
     name: "addCartSuccess",
     path: "/addCartSuccess",
     component: AddCartSuccess,
+    meta: { showFooter: true },
+  },
+  {
+    name: "shopCart",
+    path: "/shopCart",
+    component: ShopCart,
     meta: { showFooter: true },
   },
   { path: "*", redirect: "/home" },

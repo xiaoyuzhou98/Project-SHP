@@ -321,8 +321,8 @@
 </template>
 
 <script>
-import ImageList from "./ImageList/ImageList";
-import Zoom from "./Zoom/Zoom";
+import ImageList from "./ImageList";
+import Zoom from "./Zoom";
 import { mapGetters } from "vuex";
 export default {
   name: "Detail",
@@ -367,8 +367,11 @@ export default {
           skuId: this.$route.params.skuid,
           skuNum: this.skunum,
         });
-
-        this.$router.push('/addCartSuccess')
+        sessionStorage.setItem('SKUINFO',JSON.stringify(this.skuInfo))
+        this.$router.push({
+          name:'addCartSuccess',
+          query:{skuNum: this.skunum}
+        })
       } catch (err) {
         alert(err.message);
       }
