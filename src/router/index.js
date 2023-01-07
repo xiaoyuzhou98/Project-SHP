@@ -3,10 +3,7 @@ import VueRouter from "vue-router";
 
 Vue.use(VueRouter);
 
-import Home from "@/views/Home";
-import Search from "@/views/Search";
-import Register from "@/views/Register";
-import Login from "@/views/Login";
+import routes from "./routes";
 
 let originPush = VueRouter.prototype.push;
 let originReplace = VueRouter.prototype.replace;
@@ -38,31 +35,8 @@ VueRouter.prototype.replace ==
     }
   };
 export default new VueRouter({
-  routes: [
-    {
-      name: "home",
-      path: "/home",
-      component: Home,
-      meta: { showFooter: true },
-    },
-    {
-      name: "search",
-      path: "/search/:keyword?",
-      component: Search,
-      meta: { showFooter: true },
-    },
-    {
-      name: "register",
-      path: "/register",
-      component: Register,
-      meta: { showFooter: false },
-    },
-    {
-      name: "login",
-      path: "/login",
-      component: Login,
-      meta: { showFooter: false },
-    },
-    { path: "*", redirect: "/home" },
-  ],
+  routes,
+  scrollBehavior(to, from, savedPosition) {
+    return { y: 0 };
+  },
 });

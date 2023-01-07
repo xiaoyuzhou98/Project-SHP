@@ -31,3 +31,8 @@ export const reqGetFloorList = () => {
 export const reqGetSearchInfo = (body) => {
   return requests.post("/list", body);
 };
+
+// 获取商品详情
+export const reqGoodInfo = (skuId) => {
+  return requests.get(`/item/${skuId}`);
+};
