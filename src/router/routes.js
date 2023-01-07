@@ -3,6 +3,7 @@ import Search from "@/views/Search";
 import Register from "@/views/Register";
 import Login from "@/views/Login";
 import Detail from "@/views/Detail";
+import AddCartSuccess from "@/views/AddCartSuccess";
 
 export default [
   {
@@ -33,6 +34,12 @@ export default [
     name: "detail",
     path: "/detail/:skuid",
     component: Detail,
+    meta: { showFooter: true },
+  },
+  {
+    name: "addCartSuccess",
+    path: "/addCartSuccess",
+    component: AddCartSuccess,
     meta: { showFooter: true },
   },
   { path: "*", redirect: "/home" },

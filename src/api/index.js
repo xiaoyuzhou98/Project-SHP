@@ -36,3 +36,7 @@ export const reqGetSearchInfo = (body) => {
 export const reqGoodInfo = (skuId) => {
   return requests.get(`/item/${skuId}`);
 };
+// 添加到购物车(对已有物品进行数量改动)
+export const reqAddOrUpdateShopCart = (skuId, skuNum) => {
+  return requests.post(`/cart/addToCart/${skuId}/${skuNum}`);
+};
