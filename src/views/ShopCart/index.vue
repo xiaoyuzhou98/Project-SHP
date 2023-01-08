@@ -47,7 +47,7 @@
     </div>
     <div class="cart-tool">
       <div class="select-all">
-        <input class="chooseAll" type="checkbox" :checked="isAllChecked" />
+        <input class="chooseAll" type="checkbox" :checked="isAllChecked" @click="checkAll" :disabled="!cartInfoList.length" />
         <span>全选</span>
       </div>
       <div class="option">
@@ -92,6 +92,7 @@ export default {
       return sum;
     },
     isAllChecked() {
+      if (!this.cartInfoList.length) return false;
       return this.cartInfoList.every((cart) => cart.isChecked === 1);
     },
   },
@@ -99,6 +100,7 @@ export default {
     getData() {
       this.$store.dispatch("shopCart/getCartList");
     },
+
     async checkOne(cart) {
       let isChecked = cart.isChecked ? 0 : 1;
       try {
@@ -108,6 +110,17 @@ export default {
         console.log(err.message);
       }
     },
+
+    async checkAll() {
+      let isAllChecked = this.isAllChecked ? 0 : 1;
+      try {
+        await this.$store.dispatch("shopCart/updateAllChecked", isAllChecked);
+        this.getData();
+      } catch (err) {
+        console.log(err.message);
+      }
+    },
+
     // async checkAll() {
     //   if (this.isAllChecked) {
     //     this.cartInfoList.forEach((cart) => {

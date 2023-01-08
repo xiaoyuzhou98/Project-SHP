@@ -39,6 +39,16 @@ const actions = {
       return "ok";
     } else return Promise.reject(new Error("failed"));
   },
+
+  async updateAllChecked({ dispatch, getters }, isAllChecked) {
+    let promises = [];
+    getters.cartList.cartInfoList.forEach((item) => {
+      if (item.isChecked !== isAllChecked) {
+        promises.push(dispatch("updateCheckedById", { skuId: item.skuId, isChecked: isAllChecked }));
+      }
+    });
+    return Promise.all(promises);
+  },
 };
 const getters = {
   cartList(state) {
