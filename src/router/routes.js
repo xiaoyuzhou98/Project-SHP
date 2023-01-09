@@ -1,38 +1,24 @@
-import Home from "@/views/Home";
-import Search from "@/views/Search";
-import Register from "@/views/Register";
-import Login from "@/views/Login";
-import Detail from "@/views/Detail";
-import AddCartSuccess from "@/views/AddCartSuccess";
-import ShopCart from "@/views/ShopCart";
-import Trade from "@/views/Trade";
-import Pay from "@/views/Pay";
-import PaySuccess from "@/views/PaySuccess";
-import Center from "@/views/Center";
-import GroupOrder from "@/views/Center/GroupOrder";
-import MyOrder from "@/views/Center/MyOrder";
-
 export default [
   {
     name: "home",
     path: "/home",
-    component: Home,
+    component: () => import("@/views/Home"),
     meta: { showFooter: true },
   },
   {
     name: "center",
     path: "/center",
-    component: Center,
+    component: () => import("@/views/Center"),
     children: [
       {
         name: "myOrder",
         path: "myOrder",
-        component: MyOrder,
+        component: () => import("@/views/Center/MyOrder"),
       },
       {
         name: "groupOrder",
         path: "groupOrder",
-        component: GroupOrder,
+        component: () => import("@/views/Center/MyOrder"),
       },
       {
         path: "/center",
@@ -44,31 +30,31 @@ export default [
   {
     name: "search",
     path: "/search/:keyword?",
-    component: Search,
+    component: () => import("@/views/Center/MyOrder"),
     meta: { showFooter: true },
   },
   {
     name: "register",
     path: "/register",
-    component: Register,
+    component: () => import("@/views/Register"),
     meta: { showFooter: false },
   },
   {
     name: "login",
     path: "/login",
-    component: Login,
+    component: () => import("@/views/Login"),
     meta: { showFooter: false },
   },
   {
     name: "detail",
     path: "/detail/:skuid",
-    component: Detail,
+    component: () => import("@/views/Detail"),
     meta: { showFooter: true },
   },
   {
     name: "addCartSuccess",
     path: "/addCartSuccess",
-    component: AddCartSuccess,
+    component: () => import("@/views/AddCartSuccess"),
     meta: { showFooter: true },
     beforeEnter: (to, from, next) => {
       if (from.path.indexOf("/detail")) next();
@@ -78,13 +64,13 @@ export default [
   {
     name: "shopCart",
     path: "/shopCart",
-    component: ShopCart,
+    component: () => import("@/views/ShopCart"),
     meta: { showFooter: true },
   },
   {
     name: "trade",
     path: "/trade",
-    component: Trade,
+    component: () => import("@/views/Trade"),
     meta: { showFooter: true },
     beforeEnter: (to, from, next) => {
       if (from.path === "/shopCart") next();
@@ -94,7 +80,7 @@ export default [
   {
     name: "pay",
     path: "/pay",
-    component: Pay,
+    component: () => import("@/views/Pay"),
     meta: { showFooter: true },
     beforeEnter: (to, from, next) => {
       if (from.path === "/trade") next();
@@ -104,7 +90,7 @@ export default [
   {
     name: "paysuccess",
     path: "/paySuccess",
-    component: PaySuccess,
+    component: () => import("@/views/PaySuccess"),
     meta: { showFooter: true },
     beforeEnter: (to, from, next) => {
       if (from.path === "/pay") next();

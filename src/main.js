@@ -22,6 +22,14 @@ Vue.prototype.$api = API;
 Vue.prototype.$msgBox = MessageBox;
 Vue.prototype.$alert = MessageBox.alert;
 
+import VueLazyload from "vue-lazyload";
+import logo from "@/assets/logo.png";
+Vue.use(VueLazyload, {
+  loading: logo,
+});
+
+import "@/plugins/validate";
+
 new Vue({
   render: (h) => h(App),
   beforeCreate() {
