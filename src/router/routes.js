@@ -6,6 +6,7 @@ import Detail from "@/views/Detail";
 import AddCartSuccess from "@/views/AddCartSuccess";
 import ShopCart from "@/views/ShopCart";
 import Trade from "@/views/Trade";
+import Pay from "@/views/Pay";
 
 export default [
   {
@@ -54,6 +55,12 @@ export default [
     name: "trade",
     path: "/trade",
     component: Trade,
+    meta: { showFooter: true },
+  },
+  {
+    name: "pay",
+    path: "/pay",
+    component: Pay,
     meta: { showFooter: true },
   },
   { path: "*", redirect: "/home" },

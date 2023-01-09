@@ -80,3 +80,23 @@ export const reqUserInfo = () => {
 export const reqLogout = () => {
   return requests.get("/user/passport/logout");
 };
+
+//获取用户地址信息
+export const reqAddressInfo = () => {
+  return requests.get("/user/userAddress/auth/findUserAddressList");
+};
+
+//获取订单交易页信息
+export const reqOrderInfo = () => {
+  return requests.get("/order/auth/trade");
+};
+
+//提交订单
+export const reqSubmitOrder = (tradeNo, body) => {
+  return requests.post(`order/auth/submitOrder?tradeNo=${tradeNo}`, body);
+};
+
+//获取订单支付信息
+export const reqWeixinPayment = (orderId) => {
+  return requests.get(`payment/weixin/createNative/${orderId}`);
+};

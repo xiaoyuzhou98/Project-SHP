@@ -64,8 +64,6 @@ const actions = {
 
   async userLogout({ commit }) {
     let res = await reqLogout();
-    console.log(res);
-
     if (res.code === 200) {
       commit("CLEAR");
       return "ok";
