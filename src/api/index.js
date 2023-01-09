@@ -52,6 +52,31 @@ export const reqDeleteCartById = (skuId) => {
 };
 
 // 切换商品选中状态
-export const reqUpdateCheckedById = (skuID,isChecked) => {
-  return requests.get(`cart/checkCart/${skuID}/${isChecked}`);
+export const reqUpdateCheckedById = (skuID, isChecked) => {
+  return requests.get(`/cart/checkCart/${skuID}/${isChecked}`);
+};
+
+//获取验证码接口
+export const reqGetCode = (phone) => {
+  return requests.get(`/user/passport/sendCode/${phone}`);
+};
+
+//注册
+export const reqUserRegister = (body) => {
+  return requests.post("/user/passport/register", body);
+};
+
+//登录
+export const reqUserLogin = (body) => {
+  return requests.post("/user/passport/login", body);
+};
+
+//获取用户登录信息
+export const reqUserInfo = () => {
+  return requests.get("/user/passport/auth/getUserInfo");
+};
+
+//退出登录
+export const reqLogout = () => {
+  return requests.get("/user/passport/logout");
 };

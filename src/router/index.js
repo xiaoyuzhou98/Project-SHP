@@ -1,3 +1,4 @@
+import store from "@/store";
 import Vue from "vue";
 import VueRouter from "vue-router";
 
@@ -34,9 +35,31 @@ VueRouter.prototype.replace ==
       );
     }
   };
-export default new VueRouter({
+let router = new VueRouter({
   routes,
   scrollBehavior(to, from, savedPosition) {
     return { y: 0 };
   },
 });
+
+router.beforeEach(async (to, from, next) => {
+  let token = store.state.user.token;
+  let name = store.state.user.userInfo.name;
+  if (token) {
+    if (to.name === "login" || to.name === "register") {
+      next("/home");
+    } else if (name) {
+      next();
+    } else {
+      try {
+        await store.dispatch("user/reqUserInfo");
+        next();
+      } catch (err) {
+        store.commit("CLEAR");
+        alert(err.message);
+      }
+    }
+  } else next();
+});
+
+export default router;

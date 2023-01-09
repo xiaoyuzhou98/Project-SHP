@@ -5,10 +5,14 @@
       <div class="container">
         <div class="loginList">
           <p>尚品汇欢迎您！</p>
-          <p>
+          <p v-if="!$store.state.user.token">
             <span>请</span>
             <router-link to="/login">登录</router-link>
             <router-link to="/register" class="register">免费注册</router-link>
+          </p>
+          <p v-else>
+            <a>{{ userName }}</a>
+            <a href="javascript:(0)" class="register" @click="logout">退出登录</a>
           </p>
         </div>
         <div class="typeList">
@@ -62,6 +66,22 @@ export default {
       if (this.$route.query) location.query = this.$route.query;
 
       this.$router.push(location);
+    },
+
+    async logout() {
+      console.log("asd");
+
+      try {
+        await this.$store.dispatch("user/userLogout");
+        this.$router.push("/home");
+      } catch (err) {
+        alert(err.message);
+      }
+    },
+  },
+  computed: {
+    userName() {
+      return this.$store.state.user.userInfo.name;
     },
   },
 };
