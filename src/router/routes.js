@@ -35,9 +35,9 @@ export default [
         component: GroupOrder,
       },
       {
-        path:'/center',
-        redirect:'/center/myOrder'
-      }
+        path: "/center",
+        redirect: "/center/myOrder",
+      },
     ],
     meta: { showFooter: true },
   },
@@ -70,6 +70,10 @@ export default [
     path: "/addCartSuccess",
     component: AddCartSuccess,
     meta: { showFooter: true },
+    beforeEnter: (to, from, next) => {
+      if (from.path.indexOf("/detail")) next();
+      else next(false);
+    },
   },
   {
     name: "shopCart",
@@ -82,18 +86,30 @@ export default [
     path: "/trade",
     component: Trade,
     meta: { showFooter: true },
+    beforeEnter: (to, from, next) => {
+      if (from.path === "/shopCart") next();
+      else next(false);
+    },
   },
   {
     name: "pay",
     path: "/pay",
     component: Pay,
     meta: { showFooter: true },
+    beforeEnter: (to, from, next) => {
+      if (from.path === "/trade") next();
+      else next(false);
+    },
   },
   {
     name: "paysuccess",
     path: "/paySuccess",
     component: PaySuccess,
     meta: { showFooter: true },
+    beforeEnter: (to, from, next) => {
+      if (from.path === "/pay") next();
+      else next(false);
+    },
   },
   { path: "*", redirect: "/home" },
 ];

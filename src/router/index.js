@@ -57,11 +57,15 @@ router.beforeEach(async (to, from, next) => {
       } catch (err) {
         store.commit("user/CLEAR");
         alert(err.message);
-        next('/login');
-
+        next("/login");
       }
     }
-  } else next();
+  } else {
+    if (to.path.indexOf("/trade") !== -1 || to.path.indexOf("/center") !== -1 || to.path.indexOf("/pay") !== -1) {
+      next("/login?redirect="+to.path);
+    }
+    next();
+  }
 });
 
 export default router;
