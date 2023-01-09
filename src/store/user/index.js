@@ -57,7 +57,7 @@ const actions = {
     if (res.code === 200) {
       commit("USERINFO", res.data);
       return "ok";
-    } else if (res.code !== 208) {
+    } else {
       return Promise.reject(new Error("failed"));
     }
   },

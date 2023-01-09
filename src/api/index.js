@@ -97,6 +97,6 @@ export const reqSubmitOrder = (tradeNo, body) => {
 };
 
 //获取订单支付信息
-export const reqWeixinPayment = (orderId) => {
+export const reqPayInfo = (orderId) => {
   return requests.get(`payment/weixin/createNative/${orderId}`);
 };

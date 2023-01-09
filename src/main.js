@@ -15,6 +15,11 @@ Vue.component(Pagination.name, Pagination);
 import store from "@/store";
 import "@/mock/mockServe";
 import "swiper/css/swiper.css";
+import { Button } from 'element-ui';
+Vue.use(Button)
+import * as API from "@/api";
+Vue.prototype.$api = API;
+
 new Vue({
   render: (h) => h(App),
   beforeCreate() {

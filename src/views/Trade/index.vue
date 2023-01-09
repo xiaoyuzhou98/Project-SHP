@@ -57,8 +57,11 @@
     <div class="money clearFix">
       <ul>
         <li>
-          <b><i>{{orderInfo.totalNum}}</i>件商品，总商品金额</b>
-          <span>¥{{orderInfo.originalTotalAmount}}.00</span>
+          <b
+            ><i>{{ orderInfo.totalNum }}</i
+            >件商品，总商品金额</b
+          >
+          <span>¥{{ orderInfo.originalTotalAmount }}.00</span>
         </li>
         <li>
           <b>返现：</b>
@@ -71,7 +74,9 @@
       </ul>
     </div>
     <div class="trade">
-      <div class="price">应付金额:　<span>¥{{orderInfo.totalAmount}}.00</span></div>
+      <div class="price">
+        应付金额:　<span>¥{{ orderInfo.totalAmount }}.00</span>
+      </div>
       <div class="receiveInfo">
         寄送至:
         <span>{{ userDefaultAddress.fullAddress }}</span>
@@ -80,7 +85,7 @@
       </div>
     </div>
     <div class="sub clearFix">
-      <router-link class="subBtn" to="/pay">提交订单</router-link>
+      <a class="subBtn" href="javascript:(0)" @click="submitOrder">提交订单</a>
     </div>
   </div>
 </template>
@@ -92,6 +97,7 @@ export default {
   data() {
     return {
       msg: "",
+      orderId: "",
     };
   },
   mounted() {
@@ -112,6 +118,24 @@ export default {
       if (address.isDefault === "0") {
         this.addressInfo.forEach((item) => (item.isDefault = "0"));
         address.isDefault = "1";
+      }
+    },
+    async submitOrder() {
+      let tradeNo = this.orderInfo.tradeNo;
+      let data = {
+        consignee: this.userDefaultAddress.consignee,
+        consigneeTel: this.userDefaultAddress.phoneNum,
+        deliveryAddress: this.userDefaultAddress.fullAddress,
+        paymentWay: "ONLINE",
+        orderComment: this.msg,
+        orderDetailList: this.orderInfo.detailArrayList,
+      };
+      let res = await this.$api.reqSubmitOrder(tradeNo, data);
+      if (res.code === 200) {
+        this.orderId = res.data;
+        this.$router.push(`/pay?orderId=${this.orderId}`);
+      } else {
+        alert(res.data);
       }
     },
   },

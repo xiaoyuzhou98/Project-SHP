@@ -55,8 +55,10 @@ router.beforeEach(async (to, from, next) => {
         await store.dispatch("user/reqUserInfo");
         next();
       } catch (err) {
-        store.commit("CLEAR");
+        store.commit("user/CLEAR");
         alert(err.message);
+        next('/login');
+
       }
     }
   } else next();
