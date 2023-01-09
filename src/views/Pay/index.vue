@@ -1,6 +1,5 @@
 <template>
   <div class="pay-main">
-    <el-button>sda</el-button>
     <div class="pay-container">
       <div class="checkout-tit">
         <h4 class="tit-txt">
@@ -82,11 +81,14 @@
 </template>
 
 <script>
+import QRCode from "qrcode";
 export default {
   name: "Pay",
   data() {
     return {
       payInfo: {},
+      timer: null,
+      code: "",
     };
   },
   computed: {
@@ -106,10 +108,46 @@ export default {
         alert(res.data);
       }
     },
-    pay(){
-      console.log('asdsa');
-      
-    }
+    async pay() {
+      //qrcode
+      let img = await QRCode.toDataURL(this.payInfo.codeUrl);
+      this.$alert(`<img src=${img}><img/>`, "微信支付", {
+        dangerouslyUseHTMLString: true,
+        showCancelButton: true,
+        cancelButtonText: "支付遇见问题",
+        confirmButtonText: "已支付成功",
+        center: true,
+        showClose: false,
+        beforeClose: (action, instance, done) => {
+          if (action === "cancel") {
+            clearInterval(this.timer);
+            this.timer = null;
+            done();
+          } else {
+            // if (this.code === 200) {
+            clearInterval(this.timer);
+            this.timer = null;
+            done();
+            this.$router.push("/paysuccess");
+            // }
+          }
+        },
+      });
+
+      if (!this.timer) {
+        this.timer = setInterval(async () => {
+          let res = await this.$api.reqPayStatus(this.orderId);
+          console.log(res);
+          if (res.code === 200) {
+            clearInterval(this.timer);
+            this.timer = null;
+            this.code = res.code;
+            // this.$msgBox.close();
+            // this.$router.push('/paysuccess');
+          }
+        }, 1000);
+      }
+    },
   },
 };
 </script>

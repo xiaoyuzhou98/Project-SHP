@@ -7,12 +7,38 @@ import AddCartSuccess from "@/views/AddCartSuccess";
 import ShopCart from "@/views/ShopCart";
 import Trade from "@/views/Trade";
 import Pay from "@/views/Pay";
+import PaySuccess from "@/views/PaySuccess";
+import Center from "@/views/Center";
+import GroupOrder from "@/views/Center/GroupOrder";
+import MyOrder from "@/views/Center/MyOrder";
 
 export default [
   {
     name: "home",
     path: "/home",
     component: Home,
+    meta: { showFooter: true },
+  },
+  {
+    name: "center",
+    path: "/center",
+    component: Center,
+    children: [
+      {
+        name: "myOrder",
+        path: "myOrder",
+        component: MyOrder,
+      },
+      {
+        name: "groupOrder",
+        path: "groupOrder",
+        component: GroupOrder,
+      },
+      {
+        path:'/center',
+        redirect:'/center/myOrder'
+      }
+    ],
     meta: { showFooter: true },
   },
   {
@@ -61,6 +87,12 @@ export default [
     name: "pay",
     path: "/pay",
     component: Pay,
+    meta: { showFooter: true },
+  },
+  {
+    name: "paysuccess",
+    path: "/paySuccess",
+    component: PaySuccess,
     meta: { showFooter: true },
   },
   { path: "*", redirect: "/home" },
